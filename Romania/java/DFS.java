@@ -44,33 +44,48 @@ public class DFS {
 
                         graph.get(indexChild).setParentState(parentState);
                         graph.get(indexChild).setRootCheck(false);
-                        toVisit.push(graph.get(indexChild).getName());
-                        
-                        //toVisit.push(n.getCityName());
+                        System.out.println(graph.get(indexChild).getParentState().getName());
+                        toVisit.push(graph.get(indexChild).getName());                        
                     }
                 }
             }
         }
 
-        int index = 0; //THE BACKTRACKING DOESNT WORK, HOWEVER THE SOLUTION CAN STILL BE FOUND
+        int index;
         if (found) {
-            while(graph.get(index).getRootCheck()) {
-                path.add(next);
-                System.out.println(next);
+            //System.out.println(graph.get(index).getRootCheck());
+            while(true) {
+                index = getIndexOfState(graph, next);
 
-                for (int i = 0; i < graph.size(); i++) {
-                    if (graph.get(i).getName() == next) {
-                        index = graph.indexOf(graph.get(i));
-                    }
+                if (!graph.get(index).getRootCheck()) {
+                    path.add(next);
+                    next = graph.get(index).getParentState().getName();
+                }
+                else {
+                    break;
                 }
 
-                next = graph.get(index).getParentState().getName();
+                //System.out.println(path);
             }
+
+            path.add(initialState);
 
             return path;
         }
         else {
             return path;
         }
+    }
+
+    public static int getIndexOfState(ArrayList<State> graph, String next) {
+        int index = 0;
+
+        for (int i = 0; i < graph.size(); i++) {
+            if (graph.get(i).getName() == next) {
+                index = graph.indexOf(graph.get(i));
+            }
+        }
+        
+        return index;
     }
 }

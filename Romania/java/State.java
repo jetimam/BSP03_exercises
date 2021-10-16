@@ -39,6 +39,6 @@ public class State {
 	}
 
 	public boolean getRootCheck() {
-		return this.rootCheck;
+		return rootCheck;
 	}
 }
