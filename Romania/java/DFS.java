@@ -20,10 +20,8 @@ public class DFS {
 
             if (!visited.get(next)) { // checks if the current nod has been visited.
                 visited.replace(next, true);
-                //System.out.println(next);
 
                 if (next.equals(goalState)) {
-                    System.out.println("found");
                     found = true;
                 }
                 else {
@@ -38,7 +36,6 @@ public class DFS {
                             graph.get(indexChild).setParentState(parentState);
                             graph.get(indexChild).setRootCheck(false);
 
-                            System.out.println(parentState.getName() + ": " + childName);
 
                             toVisit.push(graph.get(indexChild).getName());
                         }
@@ -62,18 +59,16 @@ public class DFS {
         ArrayList<String> path = new ArrayList<String>();
 
         int index;
-            //System.out.println(graph.get(index).getRootCheck());
-            while(next != initialState) {
-                index = getIndexOfState(graph, next);
+        while(next != initialState) {
+            index = getIndexOfState(graph, next);
 
-                path.add(next);
-                next = graph.get(index).getParentState().getName();
-                //System.out.println(next);
-            }
+            path.add(next);
+            next = graph.get(index).getParentState().getName();
+        }
 
-            path.add(initialState);
+        path.add(initialState);
 
-            return path;
+        return path;
     }
 
     public static int getIndexOfState(ArrayList<State> graph, String next) {
