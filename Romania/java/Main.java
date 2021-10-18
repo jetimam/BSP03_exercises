@@ -6,7 +6,9 @@ public class Main {
 
 		graph = Initializer.MapInitializer(graph); //building the graph
 
-		ArrayList<String> result = DFS.DFSearch(graph, "Arad", "Bucharest"); //returns true
+		DFS dfs = new DFS(graph);
+
+		ArrayList<String> result = dfs.search("Arad", "Zerind"); //returns true
 
 		System.out.println("Solution found: " + reverseList(result));
 	}

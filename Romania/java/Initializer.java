@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Initializer {
 
-	public static ArrayList<State> MapInitializer(ArrayList<State> graph) {
+	public static ArrayList<State> MapInitializer(ArrayList<State> graph) {  //hashmap<String, State>
 		graph.add(new State("Arad", new ArrayList<String>(Arrays.asList("Zerind", "Sibiu", "Timisoara")), new ArrayList<Integer>(Arrays.asList(75, 140, 118))));
 		graph.add(new State("Zerind", new ArrayList<String>(Arrays.asList("Arad", "Oradea")), new ArrayList<Integer>(Arrays.asList(75, 71))));
 		graph.add(new State("Timisoara", new ArrayList<String>(Arrays.asList("Arad", "Lugoj")), new ArrayList<Integer>(Arrays.asList(118, 111))));

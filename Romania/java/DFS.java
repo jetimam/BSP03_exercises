@@ -1,7 +1,13 @@
 import java.util.*;
 
 public class DFS {
-    public static ArrayList<String> DFSearch(ArrayList<State> graph, String initialState, String goalState) {
+    private ArrayList<State> graph;
+
+    public DFS (ArrayList<State> graph) {
+        this.graph = graph;
+    }
+
+    public ArrayList<String> search(String initialState, String goalState) {
         Map<String, Boolean> visited = new HashMap<String, Boolean>(); //list of visited nodes so that we don't get stuck in an infinite loop.
         visited = Initializer.VisitedInitializer(visited); // setting everything to false
 
@@ -11,8 +17,7 @@ public class DFS {
 
         boolean found = false;
 
-        String next = ""; //the state that is currently being evaluated. THE BACKTRACKING ISSUE IS HAPPENING BECAUSE NEXT ISNT GLOBAL FOR SOME REASON
-
+        String next = ""; //the state that is currently being evaluated. 
         toVisit.push(initialState);
 
         while (!(toVisit.isEmpty() || found)) {
@@ -25,19 +30,15 @@ public class DFS {
                     found = true;
                 }
                 else {
-                    int indexParent = getIndexOfState(graph, next);
-                    State parentState = getState(graph, next);
+                    int indexParent = getIndexOfState(next);
+                    State parentState = graph.get(indexParent);
 
-                    for (String childName : graph.get(indexParent).getNeighborNames()) { //pushes the children of the state onto the stack
-                        int indexChild = getIndexOfState(graph, childName);
-
+                    for (String childName : parentState.getNeighborNames()) { //pushes the children of the state onto the stack
+                        int indexChild = getIndexOfState(childName);
                         if (!visited.get(childName)) { //avoids creating inf loops with the parentState attribute
-
                             graph.get(indexChild).setParentState(parentState);
                             graph.get(indexChild).setRootCheck(false);
-
-
-                            toVisit.push(graph.get(indexChild).getName());
+                            toVisit.push(childName);
                         }
                     }
                 }
@@ -45,7 +46,7 @@ public class DFS {
         }
 
         if (found) {
-            path = backtrack(graph, next, initialState);
+            path = backtrack(next, initialState);
 
             return path;
         }
@@ -54,16 +55,16 @@ public class DFS {
         }
     }
 
-    public static ArrayList<String> backtrack(ArrayList<State> graph, String next, String initialState) {
+    public ArrayList<String> backtrack(String next, String initialState) {
         
         ArrayList<String> path = new ArrayList<String>();
 
         int index;
         while(next != initialState) {
-            index = getIndexOfState(graph, next);
+            index = getIndexOfState(next);
 
             path.add(next);
-            next = graph.get(index).getParentState().getName();
+            next = graph.get(index).getParentState().getName(); 
         }
 
         path.add(initialState);
@@ -71,27 +72,12 @@ public class DFS {
         return path;
     }
 
-    public static int getIndexOfState(ArrayList<State> graph, String next) {
-        int index = 0;
-
+    public int getIndexOfState(String next) {
         for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).getName() == next) {
-                index = graph.indexOf(graph.get(i));
+            if (graph.get(i).getName().equals(next)) {
+                return i;
             }
         }
-        
-        return index;
-    }
-
-    public static State getState(ArrayList<State> graph, String next) {
-        State parentState = new State("Temp", new ArrayList<String>(), new ArrayList<Integer>());
-
-        for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).getName() == next) {
-                parentState = graph.get(i);
-            }
-        }
-        
-        return parentState;
+        throw new RuntimeException("Unreachable");
     }
 }
