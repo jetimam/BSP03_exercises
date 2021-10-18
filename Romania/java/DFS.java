@@ -20,61 +20,60 @@ public class DFS {
 
             if (!visited.get(next)) { // checks if the current nod has been visited.
                 visited.replace(next, true);
+                //System.out.println(next);
 
                 if (next.equals(goalState)) {
+                    System.out.println("found");
                     found = true;
                 }
                 else {
-                    int indexParent = 0;
-                    State parentState = new State("Temp", new ArrayList<String>(), new ArrayList<Integer>());
-                    for (int i = 0; i < graph.size(); i++) {
-                        if (graph.get(i).getName() == next) {
-                            parentState = graph.get(i);
-                            indexParent = graph.indexOf(graph.get(i));
-                        }
-                    }
+                    int indexParent = getIndexOfState(graph, next);
+                    State parentState = getState(graph, next);
 
-                    for (String n : graph.get(indexParent).getNeighborNames()) { //pushes the children of the state onto the stack
-                        int indexChild = 0;
-                        for (int i = 0; i < graph.size(); i++) {
-                            if (graph.get(i).getName() == n) {
-                                indexChild = graph.indexOf(graph.get(i));
-                            }
-                        }
+                    for (String childName : graph.get(indexParent).getNeighborNames()) { //pushes the children of the state onto the stack
+                        int indexChild = getIndexOfState(graph, childName);
 
-                        graph.get(indexChild).setParentState(parentState);
-                        graph.get(indexChild).setRootCheck(false);
-                        System.out.println(graph.get(indexChild).getParentState().getName());
-                        toVisit.push(graph.get(indexChild).getName());                        
+                        if (!visited.get(childName)) { //avoids creating inf loops with the parentState attribute
+
+                            graph.get(indexChild).setParentState(parentState);
+                            graph.get(indexChild).setRootCheck(false);
+
+                            System.out.println(parentState.getName() + ": " + childName);
+
+                            toVisit.push(graph.get(indexChild).getName());
+                        }
                     }
                 }
             }
         }
 
-        int index;
         if (found) {
-            //System.out.println(graph.get(index).getRootCheck());
-            while(true) {
-                index = getIndexOfState(graph, next);
-
-                if (!graph.get(index).getRootCheck()) {
-                    path.add(next);
-                    next = graph.get(index).getParentState().getName();
-                }
-                else {
-                    break;
-                }
-
-                //System.out.println(path);
-            }
-
-            path.add(initialState);
+            path = backtrack(graph, next, initialState);
 
             return path;
         }
         else {
             return path;
         }
+    }
+
+    public static ArrayList<String> backtrack(ArrayList<State> graph, String next, String initialState) {
+        
+        ArrayList<String> path = new ArrayList<String>();
+
+        int index;
+            //System.out.println(graph.get(index).getRootCheck());
+            while(next != initialState) {
+                index = getIndexOfState(graph, next);
+
+                path.add(next);
+                next = graph.get(index).getParentState().getName();
+                //System.out.println(next);
+            }
+
+            path.add(initialState);
+
+            return path;
     }
 
     public static int getIndexOfState(ArrayList<State> graph, String next) {
@@ -87,5 +86,17 @@ public class DFS {
         }
         
         return index;
+    }
+
+    public static State getState(ArrayList<State> graph, String next) {
+        State parentState = new State("Temp", new ArrayList<String>(), new ArrayList<Integer>());
+
+        for (int i = 0; i < graph.size(); i++) {
+            if (graph.get(i).getName() == next) {
+                parentState = graph.get(i);
+            }
+        }
+        
+        return parentState;
     }
 }

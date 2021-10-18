@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class State {
-	private State parentState;
+	private State parentState = this;
 	private boolean rootCheck = true;
 
 	private String name;
