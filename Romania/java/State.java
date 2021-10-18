@@ -2,11 +2,10 @@ import java.util.*;
 
 public class State {
 	private State parentState = this;
-	private boolean rootCheck = true;
 
 	private String name;
 	private ArrayList<String> neighborNames;
-	private ArrayList<Integer> neighborDistances;
+	private ArrayList<Integer> neighborDistances; //Distance cost not implemented.
 
 	public State(String name, ArrayList<String> neighborNames, ArrayList<Integer> neighborDistances) {
 		this.name = name;
@@ -32,13 +31,5 @@ public class State {
 
 	public State getParentState() {
 		return this.parentState;
-	}
-
-	public void setRootCheck(boolean rootCheck) {
-		this.rootCheck = rootCheck;
-	}
-
-	public boolean getRootCheck() {
-		return rootCheck;
 	}
 }

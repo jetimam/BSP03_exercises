@@ -1,83 +1,64 @@
 import java.util.*;
 
 public class DFS {
-    private ArrayList<State> graph;
+    private Map<String, State> graph;
 
-    public DFS (ArrayList<State> graph) {
+    public DFS(Map<String, State> graph) {
         this.graph = graph;
     }
 
     public ArrayList<String> search(String initialState, String goalState) {
-        Map<String, Boolean> visited = new HashMap<String, Boolean>(); //list of visited nodes so that we don't get stuck in an infinite loop.
-        visited = Initializer.VisitedInitializer(visited); // setting everything to false
-
-        Stack<String> toVisit = new Stack<String>(); // this is the stack that has our frontier
-
-        ArrayList<String> path = new ArrayList<String>();
-
+        Map<String, Boolean> visited = new HashMap<String, Boolean>();
+        Stack<String> toVisit = new Stack<String>(); //frontier
         boolean found = false;
-
-        String next = ""; //the state that is currently being evaluated. 
+        String currentCity = "";
         toVisit.push(initialState);
 
-        while (!(toVisit.isEmpty() || found)) {
-            next = toVisit.pop();
+        while(!(toVisit.isEmpty() || found)) {
+            currentCity = toVisit.pop();
+            visited.put(currentCity, true);
 
-            if (!visited.get(next)) { // checks if the current nod has been visited.
-                visited.replace(next, true);
+            if(currentCity.equals(goalState))
+                found = true;
+            else
+                generateChildren(visited, toVisit, currentCity);
+        }
+        if(found)
+            return trackBack(currentCity, initialState);
+        else
+            return new ArrayList<String>();
+    }
 
-                if (next.equals(goalState)) {
-                    found = true;
-                }
-                else {
-                    int indexParent = getIndexOfState(next);
-                    State parentState = graph.get(indexParent);
+    public void generateChildren(Map<String, Boolean> visited, Stack<String> toVisit, String currentCity) {
+        State currentState = graph.get(currentCity);
 
-                    for (String childName : parentState.getNeighborNames()) { //pushes the children of the state onto the stack
-                        int indexChild = getIndexOfState(childName);
-                        if (!visited.get(childName)) { //avoids creating inf loops with the parentState attribute
-                            graph.get(indexChild).setParentState(parentState);
-                            graph.get(indexChild).setRootCheck(false);
-                            toVisit.push(childName);
-                        }
-                    }
-                }
+        for(String childCity : currentState.getNeighborNames()) {
+            if(!visited.containsKey(childCity)) {
+                graph.get(childCity).setParentState(currentState);
+                toVisit.push(childCity);
             }
-        }
-
-        if (found) {
-            path = backtrack(next, initialState);
-
-            return path;
-        }
-        else {
-            return path;
         }
     }
 
-    public ArrayList<String> backtrack(String next, String initialState) {
-        
+    public ArrayList<String> trackBack(String currentCity, String initialState) {
         ArrayList<String> path = new ArrayList<String>();
 
-        int index;
-        while(next != initialState) {
-            index = getIndexOfState(next);
-
-            path.add(next);
-            next = graph.get(index).getParentState().getName(); 
+        while(currentCity != initialState) {
+            path.add(currentCity);
+            currentCity = graph.get(currentCity).getParentState().getName(); 
         }
-
         path.add(initialState);
 
-        return path;
+        return reverseList(path);
     }
 
-    public int getIndexOfState(String next) {
-        for (int i = 0; i < graph.size(); i++) {
-            if (graph.get(i).getName().equals(next)) {
-                return i;
-            }
-        }
-        throw new RuntimeException("Unreachable");
-    }
+    public ArrayList<String> reverseList(ArrayList<String> path) {
+		ArrayList<String> output = new ArrayList<String>();
+
+		for (int i = path.size()-1; i >= 0; i--) {
+			output.add(path.get(i));
+		}
+
+		return output;
+	}
 }
