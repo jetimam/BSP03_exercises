@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace Romania
 {
-    class Initializer {
-        public static Dictionary<String, State> MapInitializer(Dictionary<String, State> graph) {
+    class Initializer
+    {
+        public static Dictionary<String, State> MapInitializer(Dictionary<String, State> graph)
+        {
             graph.Add("Arad", new State("Arad", new List<string>(new []{"Zerind", "Sibiu", "Timisoara"}), new List<int>(new []{75, 140, 118})));
             graph.Add("Zerind", new State("Zerind", new List<string>(new []{"Arad", "Oradea"}), new List<int>(new []{75, 71})));
             graph.Add("Timisoara", new State("Timisoara", new List<string>(new []{"Arad", "Lugoj"}), new List<int>(new []{118, 111})));

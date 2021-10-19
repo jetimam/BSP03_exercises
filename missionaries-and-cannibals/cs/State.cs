@@ -48,21 +48,25 @@ namespace Missionaries
 			return false;
 		}
 
-		public bool GoalTest() {
+		public bool GoalTest()
+		{
         	return (this.misRight == 3 && this.canRight == 3);
     	}
 
-		public List<State> GenerateChildren() {
+		public List<State> GenerateChildren()
+		{
 			List<State> children = new List<State>();
 
-			if (this.boat == "left") {
+			if (this.boat == "left")
+			{
 				ChildCheck(children, new State(this.misLeft-2, this.canLeft, "right", this.misRight+2, this.canRight));
 				ChildCheck(children, new State(this.misLeft, this.canLeft-2, "right", this.misRight, this.canRight+2));
 				ChildCheck(children, new State(this.misLeft-1, this.canLeft-1, "right", this.misRight+1, this.canRight+1));
 				ChildCheck(children, new State(this.misLeft-1, this.canLeft, "right", this.misRight+1, this.canRight));
 				ChildCheck(children, new State(this.misLeft, this.canLeft-1, "right", this.misRight, this.canRight+1));
 			}
-			else {
+			else
+			{
 				ChildCheck(children, new State(this.misLeft+2, this.canLeft, "left", this.misRight-2, this.canRight));
 				ChildCheck(children, new State(this.misLeft, this.canLeft+2, "left", this.misRight, this.canRight-2));
 				ChildCheck(children, new State(this.misLeft+1, this.canLeft+1, "left", this.misRight-1, this.canRight-1));
@@ -72,7 +76,8 @@ namespace Missionaries
 			return children;
 		}
 
-		public void ChildCheck(List<State> children, State child) {
+		public void ChildCheck(List<State> children, State child)
+		{
 			if (child.IsValid())
 			{
 				child.SetParentState(this);
@@ -80,11 +85,13 @@ namespace Missionaries
 			}
 		}
 
-		public List<State> TrackBack(State initialState) {
+		public List<State> TrackBack(State initialState)
+		{
 			List<State> solution = new List<State>();
 			State currentState = this;
 
-			while(currentState != initialState) {
+			while(currentState != initialState)
+			{
 				solution.Add(currentState);
 				currentState = currentState.GetParentState();
 			}
