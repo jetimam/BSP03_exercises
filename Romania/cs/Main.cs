@@ -12,7 +12,7 @@ namespace Romania
 
             DFS dfs = new DFS(graph);
             
-            List<String> path = dfs.Search("Arad", "Bucharest");
+            List<String> path = dfs.Search("Arad", "Zerind");
 
             foreach(string city in path)
                 Console.Write(city + " -> ");

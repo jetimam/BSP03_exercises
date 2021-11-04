@@ -21,11 +21,10 @@ namespace Missionaries
 
             bool found = false;
 
-            State currentState = initialState;
+            State currentState;
 
-            while(!(toVisit.Count == 0 || found))
+            while(toVisit.TryPop(out currentState) && !found)
             {
-                currentState = toVisit.Pop();
                 visited.Add(currentState, true);
                 if(currentState.GoalTest())
                     found = true;
@@ -35,6 +34,7 @@ namespace Missionaries
                     {
                         if (!visited.ContainsKey(child))
                         {
+                            Console.WriteLine(child);
                             toVisit.Push(child);
                         }
                     }

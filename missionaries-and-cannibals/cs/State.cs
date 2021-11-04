@@ -41,6 +41,11 @@ namespace Missionaries
 			}
 		}
 
+		public override int GetHashCode()
+		{
+			return this.misLeft + (10*this.canLeft) + (100*this.boat.GetHashCode());
+		}
+
 		public bool IsValid()
 		{
 			if (misLeft >= 0 && misRight >= 0 && canLeft >= 0 && canRight >= 0 && (misLeft == 0 || misLeft >= canLeft) && (misRight == 0 || misRight >= canRight))
