@@ -5,23 +5,23 @@ namespace Missionaries
 {
     class DFS
     {
-        private State initialState;
+        private IState initialState;
 
-        public DFS(State initialState)
+        public DFS(IState initialState)
         {
             this.initialState = initialState;
         }
         
-        public bool Search()
+        public List<IState> Search()
         {
-            Dictionary<State, bool> visited = new Dictionary<State, bool>();
+            Dictionary<IState, bool> visited = new Dictionary<IState, bool>();
 
-            Stack<State> toVisit = new Stack<State>();
+            Stack<IState> toVisit = new Stack<IState>();
             toVisit.Push(initialState);
 
             bool found = false;
 
-            State currentState;
+            IState currentState;
 
             while(toVisit.TryPop(out currentState) && !found)
             {
@@ -30,18 +30,19 @@ namespace Missionaries
                     found = true;
                 else
                 {
-                    foreach(State child in currentState.GenerateChildren())
+                    foreach(IState child in currentState.GenerateChildren())
                     {
                         if (!visited.ContainsKey(child))
                         {
-                            Console.WriteLine(child);
                             toVisit.Push(child);
                         }
                     }
                 }
             }
-
-            return found;
+            if (found)
+                return currentState.TrackBack(initialState);
+            else
+                return new List<IState>();
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Missionaries
 			State initialState = new State(3, 3, "left", 0, 0);
 			
 			DFS dfs = new DFS(initialState);
-			bool solution = dfs.Search();
+			List<State> solution = dfs.Search();
 
-			Console.WriteLine("Solution found: " + solution);
+			Console.WriteLine("Solution found: \n" + solution);
 		}
 	}
 }
