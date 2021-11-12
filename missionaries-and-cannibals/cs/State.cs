@@ -58,7 +58,7 @@ namespace Missionaries
         	return (this.misRight == 3 && this.canRight == 3);
     	}
 
-		public List<State> GenerateChildren()
+		List<State> GenerateChildren()
 		{
 			List<State> children = new List<State>();
 
@@ -90,7 +90,7 @@ namespace Missionaries
 			}
 		}
 
-		public List<State> TrackBack(State initialState)
+		List<State> TrackBack(State initialState)
 		{
 			List<State> solution = new List<State>();
 			State currentState = this;

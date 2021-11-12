@@ -3,12 +3,16 @@ using System.Collections.Generic;
 
 namespace Missionaries
 {
-    public interface IState
+    interface IState
     {
+        int GetHashCode();
+
+        bool Equals(Object obj);
+        
         bool GoalTest();
 
-        List<State> GenerateChildren();
+        List<IState> GenerateChildren();
 
-        List<State> TrackBack(State state);
+        List<IState> TrackBack(IState initialState);
     }
 }

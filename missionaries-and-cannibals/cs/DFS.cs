@@ -28,14 +28,11 @@ namespace Missionaries
                 visited.Add(currentState, true);
                 if(currentState.GoalTest())
                     found = true;
-                else
+                else if(!visited.ContainsKey(currentState))
                 {
                     foreach(IState child in currentState.GenerateChildren())
                     {
-                        if (!visited.ContainsKey(child))
-                        {
-                            toVisit.Push(child);
-                        }
+                        toVisit.Push(child);
                     }
                 }
             }

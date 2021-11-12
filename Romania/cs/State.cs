@@ -23,15 +23,31 @@ namespace Romania
             return this.name;
         }
 
-        public void GenerateChildren(Dictionary<string, bool> visited, Stack<string> toVisit, string currentCity)
+        public override bool Equals(Object obj)
         {
-            State currentState = graph[currentCity];
+            if ((obj == null) || ! this.GetType().Equals(obj.GetType()))
+				return false;
+			else
+			{
+				State state = (State) obj;
 
-            foreach (string childCity in currentState.GetNeighborNames())
+				return (this.name.Equals(state.name));
+			}
+        }
+
+        public override int GetHashCode()
+        {
+            return this.name.GetHashCode();
+        }
+
+        public List<State> GenerateChildren(Dictionary<IState, bool> visited)
+        {
+            List<State> children = new List<State>();            
+            foreach (string childCity in this.GetNeighborNames())
             {
                 if(!visited.ContainsKey(childCity)) {
-                    graph[childCity].SetParentState(currentState);
-                    toVisit.Push(childCity);
+                    graph[childCity].SetParentState(this);
+                    children.Add(childCity);
                 }
             }
         }
